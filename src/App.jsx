@@ -1,33 +1,45 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <div className="container-fluid vh-100 d-flex flex-column">
+        {/* Top Container */}
+        <div className="row mb-3">
+            <div className="col-md-3 block">時間區</div>
+            <div className="col-md-3 block">指數區</div>
+            <div className="col-md-3 block">交易量區</div>
+            <div className="col-md-3 block">系統訊息區</div>
+        </div>
+
+        {/* Main Container */}
+        <div className="row flex-grow-1">
+            {/* 股票列表區 */}
+            <div className="col-md-4 d-flex flex-column">
+                <div className="block">頂部搜尋列</div>
+                <div className="block">表格標題列</div>
+                <div className="block">股票資訊列</div>
+                <div className="block">分頁功能列</div>
+            </div>
+
+            {/* 交易操作區 */}
+            <div className="col-md-4 d-flex flex-column">
+                <div className="block">所選股票資訊</div>
+                <div className="block-light">交易類型與表單</div>
+                <div className="block-light">交易預估與確認</div>
+                <div className="block">近期交易紀錄</div>
+            </div>
+
+            {/* 資產概況區 */}
+            <div className="col-md-4 d-flex flex-column">
+                <div className="block">資產總覽區</div>
+                <div className="block">持股部位列表</div>
+                <div className="block">績效分析區</div>
+                <div className="block">操作建議區</div>
+            </div>
+        </div>
+    </div>
     </>
   )
 }
