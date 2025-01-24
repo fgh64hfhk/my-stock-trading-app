@@ -6,90 +6,47 @@ import MarketVolume from "./components/MarketVolume";
 import SystemInfo from "./components/SystemInfo";
 import SearchBar from "./components/SearchBar";
 import TableHeader from "./components/TableHeader";
+import TableBody from "./components/TableBody";
+import StockInfo from "./components/StockInfo";
+import Pagination from "./components/Pagination";
+
+import generateUniqueStocks from "./assets/stocks";
 
 function App() {
+  // 系統時間狀態
   const [currentTime, setCurrentTime] = useState(new Date());
 
   // 股票列表狀態
-  const stocks = [
-    {
-      symbol: "1111",
-      name: "a",
-      price: 100,
-      change: 1,
-      changePercentage: 1.83,
-      volume: 10000,
-      buySellPrice: "100/1000",
-      category: "tech",
-    },
-    {
-      symbol: "2222",
-      name: "b",
-      price: 200,
-      change: 2,
-      changePercentage: 2.96,
-      volume: 20000,
-      buySellPrice: "200/2000",
-      category: "tech",
-    },
-    {
-      symbol: "3333",
-      name: "c",
-      price: 300,
-      change: 3,
-      changePercentage: 3.96,
-      volume: 30000,
-      buySellPrice: "300/3000",
-      category: "finance",
-    },
-    {
-      symbol: "4444",
-      name: "d",
-      price: 400,
-      change: 4,
-      changePercentage: 4.96,
-      volume: 40000,
-      buySellPrice: "400/4000",
-      category: "finance",
-    },
-    {
-      symbol: "5555",
-      name: "e",
-      price: 500,
-      change: 5,
-      changePercentage: 5.96,
-      volume: 50000,
-      buySellPrice: "500/5000",
-      category: "manufacturing",
-    },
-    {
-      symbol: "6666",
-      name: "f",
-      price: 600,
-      change: 6,
-      changePercentage: 6.96,
-      volume: 60000,
-      buySellPrice: "600/6000",
-      category: "manufacturing",
-    },
-  ];
+  const [initialstocks] = useState(generateUniqueStocks(30));
+
+  // 搜尋條件
+  const [category, setCategory] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("TSMC");
+  // const [sortOrder, setSortOrder] = useState("asc");
+
+  const handleCategoryChange = (e) => {
+    setCategory(e.target.value);
+    handleSearch(e.target.value, searchTerm);
+  };
+  const handleSearchTermChange = (e) => {
+    setSearchTerm(e.target.value);
+    handleSearch(category, e.target.value);
+  };
 
   // 搜尋結果
-  const [searchResults, setSearchResults] = useState(stocks);
+  const [searchResults, setSearchResults] = useState(initialstocks);
 
-  const handleSearch = (category, searchTerm, sortOrder) => {
-    let results = stocks.filter(
+  const handleSearch = (category, searchTerm) => {
+    let results = initialstocks.filter(
       (stock) =>
         stock.name.includes(searchTerm) || stock.symbol.includes(searchTerm)
     );
     if (category !== "all") {
       results = results.filter((stock) => stock.category === category);
     }
-    if (sortOrder === "asc") {
-      results.sort((a, b) => (a.symbol > b.symbol ? 1 : -1));
-    } else {
-      results.sort((a, b) => (a.symbol < b.symbol ? 1 : -1));
-    }
+
+    results.sort((a, b) => (a.symbol > b.symbol ? 1 : -1));
+
     setSearchResults(results);
   };
 
@@ -109,6 +66,25 @@ function App() {
     }, 1000);
     return () => clearInterval(timer);
   }, []);
+
+  const [selectedstock, setSelectedStock] = useState(
+    initialstocks.length > 0 ? initialstocks[0] : null
+  );
+  const handleSelectedStock = (stock) => {
+    setSelectedStock(stock);
+  };
+
+  // 實作分頁功能
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+  const totalPages = Math.ceil(searchResults.length / itemsPerPage);
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+  const paginatedResults = searchResults.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <>
@@ -139,28 +115,32 @@ function App() {
           {/* 股票列表區 */}
           <div className="col-md-4 d-flex flex-column">
             <div className="block">
-              <SearchBar onSearch={handleSearch} />
+              <SearchBar
+                category={category}
+                searchTerm={searchTerm}
+                onCategoryChange={handleCategoryChange}
+                onSearchTermChange={handleSearchTermChange}
+              />
             </div>
             <div className="block">
               <table className="table">
-                <TableHeader onSort={handleSort}/>
-                <tbody>
-                  {searchResults.map((stock) => (
-                    <tr key={stock.symbol}>
-                      <td>{stock.symbol}</td>
-                      <td>{stock.name}</td>
-                      <td>{stock.price}</td>
-                      <td>{stock.change}</td>
-                      <td>{stock.changePercentage}%</td>
-                      <td>{stock.volume}</td>
-                      <td>{stock.buySellPrice}</td>
-                    </tr>
-                  ))}
-                </tbody>
+                <TableHeader onSort={handleSort} />
+                <TableBody
+                  stocks={paginatedResults}
+                  onSelect={handleSelectedStock}
+                />
               </table>
             </div>
-            <div className="block">股票資訊列</div>
-            <div className="block">分頁功能列</div>
+            <div className="block">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            </div>
+            <div className="block">
+              <StockInfo stock={selectedstock} />
+            </div>
           </div>
 
           {/* 交易操作區 */}
