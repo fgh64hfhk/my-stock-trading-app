@@ -20,18 +20,22 @@ function App() {
   const [initialstocks] = useState(generateUniqueStocks(30));
 
   // 搜尋條件
-  const [category, setCategory] = useState("all");
-  const [searchTerm, setSearchTerm] = useState("TSMC");
+  // const [category, setCategory] = useState("all");
+  // const [searchTerm, setSearchTerm] = useState("TSMC");
   // const [sortOrder, setSortOrder] = useState("asc");
 
-  const handleCategoryChange = (e) => {
-    setCategory(e.target.value);
-    handleSearch(e.target.value, searchTerm);
-  };
-  const handleSearchTermChange = (e) => {
-    setSearchTerm(e.target.value);
-    handleSearch(category, e.target.value);
-  };
+  // const handleCategoryChange = (e) => {
+  //   setCategory(e.target.value);
+  //   handleSearch(e.target.value, searchTerm);
+  // };
+  // const handleSearchTermChange = (e) => {
+  //   setSearchTerm(e.target.value);
+  //   handleSearch(category, e.target.value);
+  // };
+
+  // 排序狀態
+  const [sortField, setSortField] = useState('symbol');
+  const [sortOrder, setSortOrder] = useState("asc");
 
   // 搜尋結果
   const [searchResults, setSearchResults] = useState(initialstocks);
@@ -51,6 +55,9 @@ function App() {
   };
 
   const handleSort = (field, order) => {
+    setSortField(field);
+    setSortOrder(order);
+
     let results = [...searchResults];
     if (order === "asc") {
       results.sort((a, b) => (a[field] > b[field] ? 1 : -1));
@@ -116,15 +123,16 @@ function App() {
           <div className="col-md-4 d-flex flex-column">
             <div className="block">
               <SearchBar
-                category={category}
-                searchTerm={searchTerm}
-                onCategoryChange={handleCategoryChange}
-                onSearchTermChange={handleSearchTermChange}
+                onSearch={handleSearch}
               />
             </div>
             <div className="block">
               <table className="table">
-                <TableHeader onSort={handleSort} />
+                <TableHeader
+                  sortField={sortField}
+                  sortOrder={sortOrder}
+                  onSort={handleSort}
+                />
                 <TableBody
                   stocks={paginatedResults}
                   onSelect={handleSelectedStock}
