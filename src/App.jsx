@@ -33,14 +33,21 @@ function App() {
   //   handleSearch(category, e.target.value);
   // };
 
+  // 搜尋條件
+  const [category, setCategory] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
+
   // 排序狀態
-  const [sortField, setSortField] = useState('symbol');
+  const [sortField, setSortField] = useState("symbol");
   const [sortOrder, setSortOrder] = useState("asc");
 
   // 搜尋結果
   const [searchResults, setSearchResults] = useState(initialstocks);
 
   const handleSearch = (category, searchTerm) => {
+    setCategory(category);
+    setSearchTerm(searchTerm);
+
     let results = initialstocks.filter(
       (stock) =>
         stock.name.includes(searchTerm) || stock.symbol.includes(searchTerm)
@@ -49,7 +56,12 @@ function App() {
       results = results.filter((stock) => stock.category === category);
     }
 
-    results.sort((a, b) => (a.symbol > b.symbol ? 1 : -1));
+    // Apply sorting based on current sortField and sortOrder
+    if (sortOrder === "asc") {
+      results.sort((a, b) => (a[sortField] > b[sortField] ? 1 : -1));
+    } else {
+      results.sort((a, b) => (a[sortField] < b[sortField] ? 1 : -1));
+    }
 
     setSearchResults(results);
   };
@@ -123,6 +135,8 @@ function App() {
           <div className="col-md-4 d-flex flex-column">
             <div className="block">
               <SearchBar
+                category={category}
+                searchTerm={searchTerm}
                 onSearch={handleSearch}
               />
             </div>

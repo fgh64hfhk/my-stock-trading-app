@@ -2,17 +2,17 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 
-function SearchBar({ onSearch }) {
-  const [category, setCategory] = useState("all");
-  const [searchTerm, setSearchTerm] = useState("");
+function SearchBar({ category, searchTerm, onSearch }) {
+  // const [category, setCategory] = useState("all");
+  // const [searchTerm, setSearchTerm] = useState("");
 
-  const handleCategoryChange = (e) => {
-    setCategory(e.target.value);
+  const handleCategorySearch = (e) => {
+    // setCategory(e.target.value);
     onSearch(e.target.value, searchTerm);
   };
 
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
+  const handleTermSearch = (e) => {
+    // setSearchTerm(e.target.value);
     onSearch(category, e.target.value);
   };
 
@@ -22,7 +22,7 @@ function SearchBar({ onSearch }) {
         className="form-select me-2"
         id="category"
         value={category}
-        onChange={handleCategoryChange}
+        onChange={handleCategorySearch}
       >
         <option value="all">所有分類</option>
         <option value="tech">科技類</option>
@@ -35,7 +35,7 @@ function SearchBar({ onSearch }) {
         type="text"
         placeholder="搜尋股票名稱"
         value={searchTerm}
-        onChange={handleSearchChange}
+        onChange={handleTermSearch}
       />
     </div>
   );
