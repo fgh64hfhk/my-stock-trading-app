@@ -9,6 +9,8 @@ import TableHeader from "./components/TableHeader";
 import TableBody from "./components/TableBody";
 import StockInfo from "./components/StockInfo";
 import Pagination from "./components/Pagination";
+import SelectedStockInfo from "./components/SelectedStockInfo";
+import TradeForm from "./components/TradeForm";
 
 import generateUniqueStocks from "./assets/stocks";
 
@@ -86,7 +88,7 @@ function App() {
     return () => clearInterval(timer);
   }, []);
 
-  const [selectedstock, setSelectedStock] = useState(
+  const [selectedStock, setSelectedStock] = useState(
     initialstocks.length > 0 ? initialstocks[0] : null
   );
   const handleSelectedStock = (stock) => {
@@ -161,14 +163,14 @@ function App() {
               />
             </div>
             <div className="block">
-              <StockInfo stock={selectedstock} />
+              <StockInfo stock={selectedStock} />
             </div>
           </div>
 
           {/* 交易操作區 */}
           <div className="col-md-4 d-flex flex-column">
-            <div className="block">所選股票資訊</div>
-            <div className="block-light">交易類型與表單</div>
+            <div className="block"><SelectedStockInfo stock={selectedStock}/></div>
+            <div className="block-light"><TradeForm stock={selectedStock} /></div>
             <div className="block-light">交易預估與確認</div>
             <div className="block">近期交易紀錄</div>
           </div>
