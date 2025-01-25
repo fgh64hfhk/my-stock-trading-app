@@ -11,6 +11,11 @@ import StockInfo from "./components/StockInfo";
 import Pagination from "./components/Pagination";
 import SelectedStockInfo from "./components/SelectedStockInfo";
 import TradeForm from "./components/TradeForm";
+import RecentTrades from "./components/RecentTrades";
+import AssetOverview from "./components/AssetOverview";
+import HoldingsList from "./components/HoldingsList";
+import PerformanceAnalysis from "./components/PerformanceAnalysis";
+import InvestmentAdvice from "./components/InvestmentAdvice";
 
 import generateUniqueStocks from "./assets/stocks";
 
@@ -21,19 +26,85 @@ function App() {
   // 股票列表狀態
   const [initialstocks] = useState(generateUniqueStocks(30));
 
-  // 搜尋條件
-  // const [category, setCategory] = useState("all");
-  // const [searchTerm, setSearchTerm] = useState("TSMC");
-  // const [sortOrder, setSortOrder] = useState("asc");
+  const [recentTrades, setRecentTrades] = useState([
+    // 假設的交易紀錄數據
+    {
+      time: "2023-10-01 10:00",
+      stock: "台積電",
+      type: "buy",
+      price: 600,
+      quantity: 10,
+      status: "成交",
+    },
+    {
+      time: "2023-10-01 10:05",
+      stock: "鴻海",
+      type: "sell",
+      price: 100,
+      quantity: 20,
+      status: "成交",
+    },
+    {
+      time: "2023-10-01 10:10",
+      stock: "台積電",
+      type: "buy",
+      price: 605,
+      quantity: 15,
+      status: "成交",
+    },
+    {
+      time: "2023-10-01 10:15",
+      stock: "鴻海",
+      type: "sell",
+      price: 98,
+      quantity: 25,
+      status: "成交",
+    },
+    {
+      time: "2023-10-01 10:20",
+      stock: "台積電",
+      type: "buy",
+      price: 610,
+      quantity: 5,
+      status: "成交",
+    },
+    // 更多交易紀錄數據...
+  ]);
 
-  // const handleCategoryChange = (e) => {
-  //   setCategory(e.target.value);
-  //   handleSearch(e.target.value, searchTerm);
-  // };
-  // const handleSearchTermChange = (e) => {
-  //   setSearchTerm(e.target.value);
-  //   handleSearch(category, e.target.value);
-  // };
+  const [totalAssetValue, setTotalAssetValue] = useState(1000000);
+  const [cashBalance, setCashBalance] = useState(500000);
+  const [securitiesValue, setSecuritiesValue] = useState(450000);
+  const [unrealizedPL, setUnrealizedPL] = useState(50000);
+  const [dailyPL, setDailyPL] = useState(2000);
+
+  const [holdings, setHoldings] = useState([
+    // 假設的持股數據
+    {
+      symbol: "2330",
+      name: "台積電",
+      quantity: 100,
+      averageCost: 580,
+      currentValue: 600,
+      profitLoss: 2000,
+      returnRate: 3.45,
+    },
+    {
+      symbol: "2317",
+      name: "鴻海",
+      quantity: 200,
+      averageCost: 95,
+      currentValue: 100,
+      profitLoss: 1000,
+      returnRate: 5.26,
+    },
+    // 更多持股數據...
+  ]);
+
+  const performance = {
+    overallReturnRate: 4.35,
+    maxProfit: 2000,
+    maxLoss: -500,
+  };
 
   // 搜尋條件
   const [category, setCategory] = useState("all");
@@ -169,18 +240,39 @@ function App() {
 
           {/* 交易操作區 */}
           <div className="col-md-4 d-flex flex-column">
-            <div className="block"><SelectedStockInfo stock={selectedStock}/></div>
-            <div className="block-light"><TradeForm stock={selectedStock} /></div>
+            <div className="block">
+              <SelectedStockInfo stock={selectedStock} />
+            </div>
+            <div className="block-light">
+              <TradeForm stock={selectedStock} />
+            </div>
             <div className="block-light">交易預估與確認</div>
-            <div className="block">近期交易紀錄</div>
+            <div className="block">
+              <RecentTrades trades={recentTrades} />
+            </div>
           </div>
 
           {/* 資產概況區 */}
           <div className="col-md-4 d-flex flex-column">
-            <div className="block">資產總覽區</div>
-            <div className="block">持股部位列表</div>
-            <div className="block">績效分析區</div>
-            <div className="block">操作建議區</div>
+            <div className="block">
+              <AssetOverview
+                totalAssetValue={totalAssetValue}
+                cashBalance={cashBalance}
+                securitiesValue={securitiesValue}
+                unrealizedPL={unrealizedPL}
+                dailyPL={dailyPL}
+              />
+            </div>
+            <div className="block">
+              <HoldingsList holdings={holdings} />
+            </div>
+            <div className="block">
+              <PerformanceAnalysis
+                holdings={holdings}
+                performance={performance}
+              />
+            </div>
+            <div className="block"><InvestmentAdvice /></div>
           </div>
         </div>
       </div>
