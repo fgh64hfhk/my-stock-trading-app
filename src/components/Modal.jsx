@@ -1,8 +1,26 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDom from "react-dom";
 
 function Modal({ title, children, onConfirm }) {
+  useEffect(() => {
+    const modalElement = document.getElementById("staticBackdrop");
+    const handleShow = () => {
+      modalElement.removeAttribute("aria-hidden");
+    };
+    const handleHide = () => {
+      modalElement.setAttribute("aria-hidden", "true");
+    };
+
+    modalElement.addEventListener("show.bs.modal", handleShow);
+    modalElement.addEventListener("hide.bs.modal", handleHide);
+
+    return () => {
+      modalElement.removeEventListener("show.bs.modal", handleShow);
+      modalElement.removeEventListener("hide.bs.modal", handleHide);
+    };
+  }, []);
+
   return ReactDom.createPortal(
     // Modal
     <div
@@ -34,13 +52,13 @@ function Modal({ title, children, onConfirm }) {
               className="btn btn-secondary"
               data-bs-dismiss="modal"
             >
-              Close
+              Cancel
             </button>
             <button
               type="button"
               className="btn btn-primary"
-              onClick={onConfirm}
               data-bs-dismiss="modal"
+              onClick={onConfirm}
             >
               Confirm
             </button>

@@ -1,0 +1,19 @@
+.index-info {
+  transition: background-color 0.5s;
+}
+
+.index-info.flashing {
+  background-color: palegoldenrod;
+}
+
+.market-volume.flashing {
+  background-color: paleturquoise;
+}
+
+.positive {
+  color: green;
+}
+
+.negative {
+  color: red;
+}

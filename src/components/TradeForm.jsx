@@ -36,9 +36,6 @@ function TradeForm({ stock }) {
     setQuantity(quantity - 1);
   };
 
-  // Modal and Backdrop states
-  // const [showConfirmation, setShowConfirmation] = useState(false);
-
   const handleSubmit = (e) => {
     e.preventDefault();
   };

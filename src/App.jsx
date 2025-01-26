@@ -19,6 +19,8 @@ import InvestmentAdvice from "./components/InvestmentAdvice";
 
 import generateUniqueStocks from "./assets/stocks";
 
+import { MarketDataProvider } from "./context/MarketDataContext";
+
 function App() {
   // 系統時間狀態
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -186,16 +188,14 @@ function App() {
           <div className="col-md-3 block">
             <SystemTime currentTime={currentTime} />
           </div>
-          <div className="col-md-3 block">
-            <IndexInfo
-              indexName="台灣加權指數"
-              indexValue={17345.67}
-              changePercentage={-0.45}
-            />
-          </div>
-          <div className="col-md-3 block">
-            <MarketVolume volume={123456789} changePercentage={+1234567} />
-          </div>
+          <MarketDataProvider>
+            <div className="col-md-3 block">
+              <IndexInfo />
+            </div>
+            <div className="col-md-3 block">
+              <MarketVolume />
+            </div>
+          </MarketDataProvider>
           <div className="col-md-3 block">
             <SystemInfo title="系統資訊一" message="加權成交量新高" />
             <SystemInfo title="系統資訊二" message="提醒新年交易時間" />

@@ -1,15 +1,23 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useContext } from "react";
+import { MarketDataContext } from "../context/MarketDataContext";
+import "./IndexInfo.css";
 
-function IndexInfo({ indexName, indexValue, changePercentage }) {
-    return (
-        <div className="index-info">
-            <h4>{indexName}</h4>
-            <p>指數：{indexValue}</p>
-            <p>漲跌幅度：{changePercentage}</p>
-        </div>
-    )
+function IndexInfo() {
+  const { indices, currentIndex, isFlashing } = useContext(MarketDataContext);
+
+  const { indexName, indexValue, change, changePercentage } =
+    indices[currentIndex];
+  const changeClass = change >= 0 ? "positive" : "negative";
+
+  return (
+    <div className={`index-info ${isFlashing ? "flashing" : ""}`}>
+      <h4>{indexName}</h4>
+      <p>指數：{indexValue}</p>
+      <p className={changeClass}>漲跌點數：{change}</p>
+      <p className={changeClass}>漲跌幅度：{changePercentage}%</p>
+    </div>
+  );
 }
 
 export default IndexInfo;
