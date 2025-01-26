@@ -26,7 +26,7 @@ function App() {
   // 股票列表狀態
   const [initialstocks] = useState(generateUniqueStocks(30));
 
-  const [recentTrades, setRecentTrades] = useState([
+  const [recentTrades] = useState([
     // 假設的交易紀錄數據
     {
       time: "2023-10-01 10:00",
@@ -71,13 +71,13 @@ function App() {
     // 更多交易紀錄數據...
   ]);
 
-  const [totalAssetValue, setTotalAssetValue] = useState(1000000);
-  const [cashBalance, setCashBalance] = useState(500000);
-  const [securitiesValue, setSecuritiesValue] = useState(450000);
-  const [unrealizedPL, setUnrealizedPL] = useState(50000);
-  const [dailyPL, setDailyPL] = useState(2000);
+  const [totalAssetValue] = useState(1000000);
+  const [cashBalance] = useState(500000);
+  const [securitiesValue] = useState(450000);
+  const [unrealizedPL] = useState(50000);
+  const [dailyPL] = useState(2000);
 
-  const [holdings, setHoldings] = useState([
+  const [holdings] = useState([
     // 假設的持股數據
     {
       symbol: "2330",
@@ -272,7 +272,9 @@ function App() {
                 performance={performance}
               />
             </div>
-            <div className="block"><InvestmentAdvice /></div>
+            <div className="block">
+              <InvestmentAdvice />
+            </div>
           </div>
         </div>
       </div>

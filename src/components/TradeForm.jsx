@@ -2,13 +2,15 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 
+// Modal components
+import Modal from "./Modal";
+
 function TradeForm({ stock }) {
   const [tradeType, setTradeType] = useState("buy");
   const [orderType, setOrderType] = useState("market");
 
   const [quantity, setQuantity] = useState(1);
   const [price, setPrice] = useState(stock ? stock.price : 0);
-  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const handleTradeTypeChange = (type) => {
     setTradeType(type);
@@ -34,9 +36,16 @@ function TradeForm({ stock }) {
     setQuantity(quantity - 1);
   };
 
+  // Modal and Backdrop states
+  // const [showConfirmation, setShowConfirmation] = useState(false);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    setShowConfirmation(true);
+  };
+
+  const handleConfirm = () => {
+    // 這裡應該要發送交易請求
+    console.log("交易成功");
   };
 
   const estimatedAmount =
@@ -128,46 +137,24 @@ function TradeForm({ stock }) {
           />
         </div>
 
-        <button type="submit" className="btn btn-success">
+        {/* Button trigger modal */}
+        <button
+          type="submit"
+          className="btn btn-success"
+          data-bs-toggle="modal"
+          data-bs-target="#staticBackdrop"
+        >
           下單
         </button>
       </form>
-      <hr />
-      {showConfirmation && (
-        <div className="confirmation-modal modal-content">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">交易表單確認</h5>
-
-              <p className="card-text">
-                交易類型：{tradeType === "buy" ? "買入" : "賣出"}
-              </p>
-              <p className="card-text">
-                交易方式：{orderType === "market" ? "市價" : "限價"}
-              </p>
-              <p className="card-text">交易數量：{quantity}</p>
-              {orderType === "limit" && (
-                <p className="card-text">價格：{price}</p>
-              )}
-              <p className="card-text">
-                預估交易金額：{estimatedAmount.toFixed(2)}
-              </p>
-              <button
-                className="btn btn-primary"
-                onClick={() => setShowConfirmation(false)}
-              >
-                確定
-              </button>
-              <button
-                className="btn btn-secondary"
-                onClick={() => setShowConfirmation(false)}
-              >
-                取消
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* 模態框（modal）組件 */}
+      <Modal title="交易表單確認" onConfirm={handleConfirm}>
+        <p>交易類型: {tradeType === "buy" ? "買入" : "賣出"}</p>
+        <p>交易方式: {orderType === "market" ? "市價" : "限價"}</p>
+        <p>數量: {quantity}</p>
+        {orderType === "limit" && <p>價格: {price}</p>}
+        <p>預估交易金額: {estimatedAmount.toFixed(2)}</p>
+      </Modal>
     </div>
   );
 }
