@@ -9,3 +9,12 @@
 .block-light {
   background-color: #e9ecef;
 }
+
+.dropdown-menu.slide-in {
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.dropdown-menu.show {
+  transform: translateX(0);
+}

@@ -20,6 +20,7 @@ import InvestmentAdvice from "./components/InvestmentAdvice";
 import generateUniqueStocks from "./assets/stocks";
 
 import { MarketDataProvider } from "./context/MarketDataContext";
+import SlidingDropdown from "./components/SlidingDropdown";
 
 function App() {
   // 系統時間狀態
@@ -199,6 +200,7 @@ function App() {
           <div className="col-md-3 block">
             <SystemInfo title="系統資訊一" message="加權成交量新高" />
             <SystemInfo title="系統資訊二" message="提醒新年交易時間" />
+            <SlidingDropdown />
           </div>
         </div>
 
