@@ -194,11 +194,12 @@ function StockDashboard() {
           <div className="col-md-3 block">
             <MarketVolume />
           </div>
+          <div className="col-md-3 block">
+            <SystemInfo title="系統資訊一" message="加權指數提示" />
+            {/* <SystemInfo title="系統資訊二" message="加權指數成交量提示" />
+            <SystemInfo title="系統資訊三" message="年後交易時間提醒" /> */}
+          </div>
         </MarketDataProvider>
-        <div className="col-md-3 block">
-          <SystemInfo title="系統資訊一" message="加權成交量新高" />
-          <SystemInfo title="系統資訊二" message="提醒新年交易時間" />
-        </div>
       </div>
 
       {/* Main Container */}
