@@ -1,8 +1,27 @@
 /* eslint-disable no-unused-vars */
-import React, { Suspense } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Offcanvas } from "bootstrap";
 
 function NavigationRouter() {
+  useEffect(() => {
+    const offcanvasElement = document.getElementById("offcanvasNavbar");
+    const offcanvas = new Offcanvas(offcanvasElement);
+
+    const handleShow = () => {
+      const existingBackdrops = document.querySelectorAll(
+        ".offcanvas-backdrop"
+      );
+      existingBackdrops.forEach((backdrop) => backdrop.remove());
+    };
+
+    offcanvasElement.addEventListener("show.bs.offcanvas", handleShow);
+
+    return () => {
+      offcanvasElement.removeEventListener("show.bs.offcanvas", handleShow);
+      offcanvas.dispose();
+    };
+  }, []);
   return (
     <>
       <nav className="navbar bg-body-tertiary fixed-top">
@@ -28,7 +47,7 @@ function NavigationRouter() {
           >
             <div className="offcanvas-header">
               <h5 className="offcanvas-title" id="offcanvasNavbarLabel">
-                股票應用程式
+                Offcanvas
               </h5>
               <button
                 type="button"
@@ -57,7 +76,7 @@ function NavigationRouter() {
                 </li>
                 <li className="nav-item">
                   <a className="nav-link" href="#">
-                    用戶設定
+                    Link
                   </a>
                 </li>
                 <li className="nav-item dropdown">
